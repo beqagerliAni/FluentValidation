@@ -7,7 +7,7 @@ namespace WebApplication1.Dto
     {
         public string Name { get; set; }
         public string Email { get; set; }
-        public string Passwrod { get; set; }
+        public string Password { get; set; }
         public string RePassword { get; set; }
     }
 }
@@ -27,7 +27,7 @@ public class TestDtoValidator : AbstractValidator<TestDto>
             .EmailAddress()
             .WithMessage("email must be valid");
 
-        RuleFor(x => x.Passwrod)
+        RuleFor(x => x.Password)
             .NotEmpty()
             .WithMessage("New password is required.")
             .MinimumLength(8)
@@ -40,5 +40,11 @@ public class TestDtoValidator : AbstractValidator<TestDto>
             .WithMessage("New password must contain at least one digit.")
             .Matches("[^a-zA-Z0-9]")
             .WithMessage("New password must contain at least one special character.");
+
+        RuleFor(command => command.RePassword)
+            .NotEmpty()
+            .WithMessage("Re-entering the new password is required.")
+            .Equal(command => command.Password)
+            .WithMessage("RePassword must match NewPassword.");
     }
 }
